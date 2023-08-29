@@ -47,7 +47,9 @@
                             html + '</tr>';
                         dataTable.append(html);
                     })
-                    dataTable.dataTable()
+                    dataTable.dataTable({
+                        "pageLength": 25
+                    })
                 },
                 error: function(data){
                   
