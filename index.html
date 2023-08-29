@@ -1,26 +1,58 @@
 <html>
     <title>Techbodia</title>
+    <style>
+        img
+        {
+            max-width: 100px;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https:////cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <body>
-<table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Flags</th>
-                <th>Country Name</th>
-                <th>2 Character Country Code</th>
-                <th>3 Character Country Code</th>
-                <th>Native Country Name</th>
-                <th>Alternative Country Name</th>
-                <th>Country Calling Codes</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Flags</th>
+                    <th>Country Name</th>
+                    <th>2 Character Country Code</th>
+                    <th>3 Character Country Code</th>
+                    <th>Native Country Name</th>
+                    <th>Alternative Country Name</th>
+                    <th>Country Calling Codes</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </body>
     <script type="text/javascript">
-        new DataTable('#example');
+        $(document).ready(function(){
+             var dataTable = $('#example');
+            $.ajax({
+                type: 'GET',
+                url: 'https://restcountries.com/v3.1/all',
+                success: function (data) {
+                    $.each(data,function(key,value){
+                        console.log(value);
+                        var html = '';
+                            html += '<tr>';
+                            html += '<td><img src="'+value.flags.png+'"></img></td>';
+                            html += '<td>'+value.name.official+'</td>';
+                            html += '<td>'+value.cca2+'</td>';
+                            html += '<td>'+value.cca3+'</td>';
+                            html += '<td>'+((value.name.nativeName)?(value.name.nativeName.eng?value.name.nativeName.eng.official:value.name.official):'')+'</td>';
+                            html += '<td>'+value.altSpellings+'</td>';
+                            html += '<td>'+value.idd.suffixes+'</td>';
+                            html + '</tr>';
+                        dataTable.append(html);
+                    })
+                    dataTable.dataTable()
+                },
+                error: function(data){
+                  
+                }
+            })
+        })
     </script>
 </html>
